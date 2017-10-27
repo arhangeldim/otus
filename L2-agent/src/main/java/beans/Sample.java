@@ -12,7 +12,7 @@ import jol.ObjectLayer;
  * GRADLE
  * $gradle clean mainJar agentJar
  * $cd build/libs/
- * $java -XX:-UseCompressedOops -javaagent:instrumentation-agent.jar -cp instrumentation-main.jar beans.Sample
+ * $java -XX:-UseCompressedOops -javaagent:L2-agent-agent.jar -cp L2-agent-main.jar beans.Sample
  * try -XX:+UseCompressedOops
  *
  *

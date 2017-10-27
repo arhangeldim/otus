@@ -59,6 +59,7 @@ public class UnsafeUtil {
         public boolean stub;
     }
 
+    // TODO: как получить размер хэдера?
     private static int getHeaderSize() {
         int headerSize;
         try {
@@ -70,11 +71,10 @@ public class UnsafeUtil {
         return headerSize;
     }
 
-
+    // Нужна ссылка на хипе, вернет значение адреса в памяти
     public static long addressOf(Object obj) {
         objArray[0] = obj;
-        long objectAddress = unsafe.getLong(objArray, BASE_OFFSET);
-        return objectAddress;
+        return unsafe.getLong(objArray, BASE_OFFSET);
     }
 
     public static int sizeOfType(Class<?> type) {

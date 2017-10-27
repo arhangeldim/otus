@@ -23,6 +23,7 @@ public class App {
     public void doWork() {
         while (true) {
             counter += 1;
+//            inc();
             System.out.println("counter hello: " + counter);
 
             try {
