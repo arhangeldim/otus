@@ -158,6 +158,7 @@ public class UnsafeUtil {
             long size = sizeOfType(field.getType());
             ps.printf("[%02x+%d]: %d\t%s\n", address, offset, size, field);
             if (field.getType() == String.class) {
+                System.out.println(String .format("Ref: %02x", unsafe.getLong(address + offset)));
                 dumpString((String) field.get(object));
             } else {
                 dump(ps, address + offset, size);
