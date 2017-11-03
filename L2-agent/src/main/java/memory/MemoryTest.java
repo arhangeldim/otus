@@ -32,7 +32,7 @@ public class MemoryTest {
             objs[i] = supplier.get();
         }
 
-        // TODO: пока мы создавали объекты, другие треды тоже могли аллоцировать себе память
+        // TODO: Зачем второй gc?
         runtime.gc();
         long memAfter = runtime.totalMemory() - runtime.freeMemory();
         System.out.println(String.format("\n%-30s\tSIZEOF(): %d bytes\n", comment, Math.round((double) (memAfter - memBefore) / SIZE)));

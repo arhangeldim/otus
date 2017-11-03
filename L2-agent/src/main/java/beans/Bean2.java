@@ -4,8 +4,8 @@ package beans;
  *
  */
 public class Bean2 {
-//    byte b1;
-//    byte b2;
+    byte b1;
+    byte b2;
     long l1;
     long l2;
 

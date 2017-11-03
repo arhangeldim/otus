@@ -41,6 +41,7 @@ public class Sample {
            */
 
         System.out.println(String.format("%-30s %-25s\t %-10s\t%-10s\t%-10s\n", "toString", "class", "Agent", "objLayer", "graph"));
+
         printSize(new Object());
         printSize(new String());
         printSize(new String("a"));
@@ -55,11 +56,14 @@ public class Sample {
 
         printSize(new Bean());
 
+
+        // TODO: check summary size of String+Bean
         Bean bean = new Bean();
         bean.s1 = "hello";
         printSize(bean);
         printSize(bean.s1);
 
+        // TODO: padding with boolean fields
         printSize(new Bean2());
     }
 

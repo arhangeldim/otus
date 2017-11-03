@@ -21,6 +21,30 @@ import sun.misc.Unsafe;
  *
  * get address size for your JVM
  * {@link Unsafe#addressSize()}
+ *
+ *
+ *
+ *
+ 35// Bit-format of an object header (most significant first, big endian layout below):
+ 36//
+ 37//  32 bits:
+ 38//  --------
+ 39//             hash:25 ------------>| age:4    biased_lock:1 lock:2 (normal object)
+ 40//             JavaThread*:23 epoch:2 age:4    biased_lock:1 lock:2 (biased object)
+ 41//             size:32 ------------------------------------------>| (CMS free block)
+ 42//             PromotedObject*:29 ---------->| promo_bits:3 ----->| (CMS promoted object)
+ 43//
+ 44//  64 bits:
+ 45//  --------
+ 46//  unused:25 hash:31 -->| unused:1   age:4    biased_lock:1 lock:2 (normal object)
+ 47//  JavaThread*:54 epoch:2 unused:1   age:4    biased_lock:1 lock:2 (biased object)
+ 48//  PromotedObject*:61 --------------------->| promo_bits:3 ----->| (CMS promoted object)
+ 49//  size:64 ----------------------------------------------------->| (CMS free block)
+ 50//
+ 51//  unused:25 hash:31 -->| cms_free:1 age:4    biased_lock:1 lock:2 (COOPs && normal object)
+ 52//  JavaThread*:54 epoch:2 cms_free:1 age:4    biased_lock:1 lock:2 (COOPs && biased object)
+ 53//  narrowOop:32 unused:24 cms_free:1 unused:4 promo_bits:3 ----->| (COOPs && CMS promoted object)
+ 54//  unused:21 size:35 -->| cms_free:1 unused:7 ------------------>| (COOPs && CMS free block)
  */
 public class UnsafeUtil {
     public static Unsafe unsafe;
@@ -111,7 +135,7 @@ public class UnsafeUtil {
             if (i % 16 == 0) {
                 ps.print(String.format("[0x%04x]: ", i));
             }
-            ps.print(String.format("%02x %s", unsafe.getByte(address + i), ((i + 1) % 4 == 0) ? " " : ""));
+            ps.print(String.format("%02x %s", unsafe.getByte(0), ((i + 1) % 4 == 0) ? " " : ""));
             if ((i + 1) % 16 == 0) {
                 ps.println();
             }
@@ -190,15 +214,15 @@ public class UnsafeUtil {
          * Встроенный (identity) хеш-код генерируется лишь один раз для каждого объекта при первом вызове метода hashCode()
          */
         System.out.printf("hashCode() 0x%04x\n", t.hashCode());
-//        System.out.printf("identityHashCode():\t0x%04x\n", System.identityHashCode(t));
+        System.out.printf("identityHashCode():\t0x%04x\n", System.identityHashCode(t));
 
         dumpHeader(System.out, t);
     }
 
     static class T {
-        int a1 = 15;
-        int a2 = 255;
-        String val = "aaaaaa";
+        int a1 = 15; // 0x0f
+        int a2 = 255; // 0xff
+        String val = "aaaaaaxx";
 
         @Override
         public int hashCode() {

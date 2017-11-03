@@ -22,8 +22,8 @@ public class App {
 
     public void doWork() {
         while (true) {
-            counter += 1;
-//            inc();
+//            counter += 10;
+            inc();
             System.out.println("counter hello: " + counter);
 
             try {
@@ -35,6 +35,6 @@ public class App {
     }
 
     public void inc() {
-        counter += 100;
+        counter += 10;
     }
 }
